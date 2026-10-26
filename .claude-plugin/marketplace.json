@@ -36,6 +36,11 @@
       "name": "reflect",
       "source": "./plugins/reflect",
       "description": "Notices a lasting rule in your prompt and asks where to save it. Nothing is saved without your choice."
+    },
+    {
+      "name": "screen-share",
+      "source": "./plugins/screen-share",
+      "description": "Type /screen-share before you record: names, emails, phone numbers and money amounts show as grey bars. Claude still reads the real text."
     }
   ]
 }

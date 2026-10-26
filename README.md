@@ -7,6 +7,7 @@ Six small, free mods for [Claude Code](https://claude.com/claude-code) that make
 | [**cache-clock**](plugins/cache-clock) | Countdown above the prompt until the prompt cache goes cold. Optional keep-warm ping. | Only when keep warm is on |
 | [**chat-handoff**](plugins/chat-handoff) | At 250k tokens, on a cold cache, or on `/handover`, writes a detailed prompt for a fresh chat and shows a `Start fresh chat` button. Nothing starts until you click. | One per handoff |
 | [**chat-inventory**](plugins/chat-inventory) | Side panel "In this chat": the to-do list with its goal, every connector with a call count, the skills used, and the files read and created. | None |
+| [**screen-share**](plugins/screen-share) | `/screen-share` hides names, emails, phone numbers and money amounts as grey bars on screen while you record or present. Claude still reads the real text. | None |
 | [**helper-desk**](plugins/helper-desk) | Task bar that fills as Claude ticks off its to-do list, plus one live card per subagent. | None |
 | [**reflect**](plugins/reflect) | Notices a lasting rule in your prompt ("never use em dashes") and asks where to save it: a global rules file, Claude's memory, your vault, or nowhere. Nothing is saved without a click. | One short Haiku call per prompt |
 | [**brain-dump**](plugins/brain-dump) | Holds a long, messy prompt, asks 2 to 3 questions about the gaps, and fills the prompt box with a clear four-part prompt. | Two, only for long prompts |

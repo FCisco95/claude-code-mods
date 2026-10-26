@@ -1,0 +1,13 @@
+{
+  "name": "screen-share",
+  "version": "0.1.0",
+  "description": "Type /screen-share before you record or present: names, emails, phone numbers and money amounts show as grey bars on screen. Claude still reads the real text.",
+  "author": {
+    "name": "Cisco Vieira",
+    "url": "https://github.com/FCisco95"
+  },
+  "homepage": "https://github.com/FCisco95/claude-code-mods/tree/main/plugins/screen-share",
+  "repository": "https://github.com/FCisco95/claude-code-mods",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

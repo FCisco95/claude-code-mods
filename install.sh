@@ -4,7 +4,7 @@
 set -eu
 here=$(cd "$(dirname "$0")" && pwd)
 dest="${CLAUDE_CONFIG_DIR:-$HOME/.claude}/skills"
-mods=${*:-"brain-dump cache-clock chat-handoff helper-desk reflect chat-inventory"}
+mods=${*:-"brain-dump cache-clock chat-handoff helper-desk reflect chat-inventory screen-share"}
 mkdir -p "$dest"
 for m in $mods; do
   [ -d "$here/plugins/$m" ] || { echo "unknown mod: $m" >&2; exit 1; }
