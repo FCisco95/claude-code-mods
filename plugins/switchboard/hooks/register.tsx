@@ -8,8 +8,8 @@ import type { ListedPlugin } from './scan'
 const PANE = 'switchboard'
 // While the pane is open the list is read again this often, so a mod you just added or removed shows up.
 const REFRESH_MS = 5000
-const GREEN = '#16a34a'
-const ACCENT = '#0369a1'
+const GREEN = 'success'
+const ACCENT = 'suggestion'
 
 // Change the tag when a row's fields change: it declines what an earlier version stored, which outlives a reload.
 const mods = atom({ plugin: 'switchboard', key: 'mods' } as const, [] as Mod[], { shape: 'mods-1' })
@@ -175,7 +175,9 @@ export const register: Register = on => {
       <Box flexDirection="column" paddingX={1}>
         <Box gap={2}>
           <Text color={ACCENT} weight="bold">Mods</Text>
-          <Text dimColor>{`${list.filter(m => m.isEnabled).length} on of ${list.length}`}</Text>
+          <Text dimColor>{`${list.filter(m => m.isEnabled).length} of ${list.length} on`}</Text>
+        </Box>
+        <Box gap={2}>
           <Button key="refresh" label="Refresh" onPress={() => refresh($)} />
           <Button key="close" label="Close" hotkey="c" onPress={() => $.ui.close({ id: PANE })} />
         </Box>
@@ -215,19 +217,7 @@ export const register: Register = on => {
     )
   })
 
-  // Hide: whatever a hidden mod draws above the prompt or in a pane is replaced by nothing, not by an empty box.
-  on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
-    const out = await next(e)
-    const off = await read($, hidden)
-
-    if (off.length === 0 || !off.includes(drawnBy(next.trace, out))) {
-      return out
-    }
-
-    const { Box } = $.ui.resolve(e)
-
-    return <Box display="none" />
-  })
+  // Hide, for panes: a hidden mod's pane is replaced by one line. Bands above the prompt hide themselves: each reads this list.
 
   on('ui.render', { component: 'Pane' }, async ($, e, next) => {
     const out = await next(e)

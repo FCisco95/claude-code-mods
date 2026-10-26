@@ -1,6 +1,6 @@
 import { expect, test } from 'claude-code/testing'
 
-import { diffText } from '../hooks/diff'
+import { diffText, toUnified } from '../hooks/diff'
 
 const PANE = {
   plugin: 'replay-theater',
@@ -10,30 +10,44 @@ const PANE = {
   props: { title: 'Replay Theater', isFocused: true, bodyColumns: 80, placement: 'inline', scroll: { offset: 0, bodyRows: 18 }, view: {} },
 } as const
 
-test('the diff shows only the lines that went and the lines that came', async () => {
+test('the diff shows the lines that went, the lines that came and a little context, with line numbers', async () => {
   const change = diffText(
     'There has never been a better time to be a small team.\nFor years big companies had the people and the tools.\nKeep this.',
     'Small teams now have the tools big companies had.\nKeep this.',
   )
 
   expect(change.lines).toEqual([
-    { sign: '-', text: 'There has never been a better time to be a small team.' },
-    { sign: '-', text: 'For years big companies had the people and the tools.' },
-    { sign: '+', text: 'Small teams now have the tools big companies had.' },
+    { sign: '-', text: 'There has never been a better time to be a small team.', o: 1, w: 1 },
+    { sign: '-', text: 'For years big companies had the people and the tools.', o: 2, w: 1 },
+    { sign: '+', text: 'Small teams now have the tools big companies had.', o: 3, w: 1 },
+    { sign: ' ', text: 'Keep this.', o: 3, w: 2 },
   ])
   expect([change.added, change.removed]).toEqual([1, 2])
 })
 
-test('a line diff keeps untouched lines out and counts a new file as all added', async () => {
+test('a line diff keeps only nearby untouched lines and counts a new file as all added', async () => {
   const change = diffText('a\nb\nc\nd', 'a\nB\nc\nd\ne')
 
   expect(change.lines).toEqual([
-    { sign: '-', text: 'b' },
-    { sign: '+', text: 'B' },
-    { sign: '+', text: 'e' },
+    { sign: ' ', text: 'a', o: 1, w: 1 },
+    { sign: '-', text: 'b', o: 2, w: 2 },
+    { sign: '+', text: 'B', o: 3, w: 2 },
+    { sign: ' ', text: 'c', o: 3, w: 3 },
+    { sign: ' ', text: 'd', o: 4, w: 4 },
+    { sign: '+', text: 'e', o: 5, w: 5 },
   ])
   expect(diffText('', 'one\ntwo')).toMatchObject({ added: 2, removed: 0 })
   expect(diffText('same', 'same').lines).toEqual([])
+})
+
+test('the changed lines become unified-diff hunks, one hunk per stretch', async () => {
+  expect(toUnified(diffText('a\nb\nc\nd', 'a\nB\nc\nd\ne').lines)).toBe('@@ -1,4 +1,5 @@\n a\n-b\n+B\n c\n d\n+e')
+
+  const far = Array.from({ length: 30 }, (_, i) => `line ${i + 1}`)
+  const edited = far.map((t, i) => (i === 2 || i === 25 ? `${t} changed` : t))
+  const unified = toUnified(diffText(far.join('\n'), edited.join('\n')).lines)
+
+  expect(unified.split('\n').filter(l => l.startsWith('@@')).length).toBe(2)
 })
 
 test('a very long change keeps exact counts and a capped list', async () => {
@@ -66,19 +80,17 @@ test('/replay steps through the edits of a turn, one at a time', async ($, on) =
 
   const ui = await $.ui.mount(PANE)
   expect((await ui.find({ type: 'Text', text: /step 1 of 3/ }))?.text).toBe('step 1 of 3')
-  expect((await ui.find({ type: 'Text', text: /~\/Newsletter\/draft\.md/ }))?.text).toBe('~/Newsletter/draft.md')
-  expect((await ui.find({ type: 'Text', text: /^- Hello there/ }))?.text).toBe('- Hello there')
-  expect((await ui.find({ type: 'Text', text: /^\+ Hi/ }))?.text).toBe('+ Hi')
+  expect((await ui.find({ type: 'Text', text: /draft\.md/ }))?.text).toBe('draft.md')
+  expect(JSON.stringify(await ui.find({ type: 'Code' }))).toContain('-Hello there')
 
   await ui.press({ key: 'next' })
   expect((await ui.find({ type: 'Text', text: /step 2 of 3/ }))?.text).toBe('step 2 of 3')
-  expect((await ui.find({ type: 'Text', text: /^- old line/ }))?.text).toBe('- old line')
-  expect((await ui.find({ type: 'Text', text: /^\+ new line/ }))?.text).toBe('+ new line')
+  expect(JSON.stringify(await ui.find({ type: 'Code' }))).toContain('+new line')
 
   await ui.press({ key: 'next' })
   await ui.press({ key: 'next' })
   expect((await ui.find({ type: 'Text', text: /step 3 of 3/ }))?.text).toBe('step 3 of 3')
-  expect((await ui.find({ type: 'Text', text: /New file/ }))?.text).toBe('New file')
+  expect((await ui.find({ type: 'Text', text: /NEW FILE/ }))?.text).toBe(' NEW FILE ')
 
   await ui.press({ key: 'prev' })
   expect((await ui.find({ type: 'Text', text: /step 2 of 3/ }))?.text).toBe('step 2 of 3')

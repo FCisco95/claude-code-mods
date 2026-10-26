@@ -4,11 +4,11 @@ import type { EngineInterface, Register } from 'claude-code'
 import type { Card, Todo } from '../types'
 
 const PANE = 'helper-desk'
-const PURPLE = '#7c3aed'
-const GREEN = '#16a34a'
-const AMBER = '#ca8a04'
-const ORANGE = '#c2410c'
-const COLORS = ['#2563eb', '#db2777', '#ea580c', '#16a34a', '#dc2626', '#0891b2', '#ca8a04', '#9333ea']
+const PURPLE = 'merged'
+const GREEN = 'success'
+const AMBER = 'warning'
+const ORANGE = 'claude'
+const COLORS = ['suggestion', 'permission', 'claude', 'success', 'error', 'planMode', 'warning', 'merged']
 const SPINNER = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏']
 // Rows one card takes: two border rows, a header, a model line, a step line and a bar.
 const CARD_ROWS = 6
@@ -109,6 +109,17 @@ const applyTodos = async ($: EngineInterface, incoming: Todo[]) => {
     await update($, isBandHidden, () => false)
   }
 }
+
+// A band stacks above whatever the mods beneath it drew, instead of replacing it: Reflect's card and Cache Clock's timer can show together.
+const stack = (Box: any, below: unknown, mine: any) =>
+  below ? (
+    <Box flexDirection="column">
+      {mine}
+      {below}
+    </Box>
+  ) : (
+    mine
+  )
 
 export const register: Register = on => {
   let createdTasks = 0
@@ -291,13 +302,20 @@ export const register: Register = on => {
   })
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
+    const below = await next(e)
+    const hiddenBy = (await $.state.get({ plugin: 'switchboard', key: 'hidden' } as const)).value ?? []
+
+    if (hiddenBy.includes($.plugin.name)) {
+      return below
+    }
+
     const list = await read($, todos)
     const agents = await read($, cards)
     const hasTasks = list.length > 0 && !(await read($, isBandHidden))
     const live = agents.filter(c => c.status === 'running')
 
     if ((!hasTasks && live.length === 0) || e.props.hasSurvey) {
-      return next(e)
+      return below
     }
 
     const { Box, Button, Text } = $.ui.resolve(e)
@@ -324,12 +342,12 @@ export const register: Register = on => {
     const width = Math.max(10, Math.min(40, e.props.bodyColumns - 36))
     const filled = Math.round((width * done) / list.length)
 
-    return (
+    return stack(Box, below, (
       <Box flexDirection="column" paddingX={1}>
         <Box gap={1}>
           <Text color={PURPLE}>{running ? spinnerAt(now) : '●'}</Text>
           <Text weight="bold">Tasks</Text>
-          <Text backgroundColor={PURPLE} color="white" weight="bold">
+          <Text backgroundColor={PURPLE} color="inverseText" weight="bold">
             {` ${done}/${list.length} `}
           </Text>
           <Text color={PURPLE}>{'█'.repeat(filled)}</Text>
@@ -346,7 +364,7 @@ export const register: Register = on => {
         </Text>
         {agentLine}
       </Box>
-    )
+    ))
   })
 
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
@@ -383,12 +401,12 @@ export const register: Register = on => {
             <Text dimColor>{`${formatTokens(c.tokens)} · ${formatTime(end - c.startedAt)}`}</Text>
           </Box>
           <Text dimColor wrap="truncate-end">{`${c.type} · ${shortModel(c.model)} · click to open`}</Text>
-          <Text color={isRunning ? undefined : c.status === 'done' ? GREEN : 'red'} wrap="truncate-end">
+          <Text color={isRunning ? undefined : c.status === 'done' ? GREEN : 'error'} wrap="truncate-end">
             {isRunning
               ? `Running · step ${c.steps} · ${c.note}`
               : `${c.status === 'done' ? 'Done' : 'Stopped'} · ${c.steps} steps · ${c.note}`}
           </Text>
-          <Text color={isRunning ? color : c.status === 'done' ? GREEN : 'red'}>{barOf(barWidth, now, isRunning)}</Text>
+          <Text color={isRunning ? color : c.status === 'done' ? GREEN : 'error'}>{barOf(barWidth, now, isRunning)}</Text>
         </Box>
       )
     }
@@ -418,11 +436,11 @@ export const register: Register = on => {
         </Box>
         {list.length === 0 && <Text dimColor>No subagents yet.</Text>}
         {shownRunning.length > 0 && (
-          <Text backgroundColor={GREEN} color="white" weight="bold">{` Running · ${running.length} `}</Text>
+          <Text backgroundColor={GREEN} color="inverseText" weight="bold">{` Running · ${running.length} `}</Text>
         )}
         {shownRunning.map(renderCard)}
         {shownFinished.length > 0 && (
-          <Text backgroundColor={AMBER} color="white" weight="bold">{` Finished · ${finished.length} `}</Text>
+          <Text backgroundColor={AMBER} color="inverseText" weight="bold">{` Finished · ${finished.length} `}</Text>
         )}
         {shownFinished.map(renderCard)}
         {hidden > 0 && <Text dimColor>{`+${hidden} more`}</Text>}

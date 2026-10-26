@@ -14,9 +14,9 @@ const TICK_MS = 3000
 // Rendered-transcript fallback (used only where the chat cannot be forked): at most this many characters.
 const FALLBACK_CHARS = 500_000
 
-const GREEN = '#16a34a'
-const AMBER = '#ca8a04'
-const RED = '#dc2626'
+const GREEN = 'success'
+const AMBER = 'warning'
+const RED = 'error'
 
 const status = atom({ plugin: 'chat-handoff', key: 'status' } as const, 'idle' as 'idle' | 'offer' | 'working' | 'ready' | 'failed')
 const reason = atom({ plugin: 'chat-handoff', key: 'reason' } as const, '')
@@ -351,6 +351,17 @@ const runCommand = async ($: EngineInterface, args: string): Promise<{ text: str
   return { text: 'Writing the handoff prompt. A button to start the fresh chat appears above the prompt when it is ready.' }
 }
 
+// A band stacks above whatever the mods beneath it drew, instead of replacing it: Reflect's card and Cache Clock's timer can show together.
+const stack = (Box: any, below: unknown, mine: any) =>
+  below ? (
+    <Box flexDirection="column">
+      {mine}
+      {below}
+    </Box>
+  ) : (
+    mine
+  )
+
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
     const description = 'Write a detailed handoff prompt, then start a fresh chat from it. Args: start, copy, show'
@@ -418,10 +429,17 @@ export const register: Register = on => {
   })
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
+    const below = await next(e)
+    const hiddenBy = (await $.state.get({ plugin: 'switchboard', key: 'hidden' } as const)).value ?? []
+
+    if (hiddenBy.includes($.plugin.name)) {
+      return below
+    }
+
     const current = await read($, status)
 
     if (current === 'idle' || e.props.hasSurvey || (await read($, isHidden))) {
-      return next(e)
+      return below
     }
 
     const { Box, Button, Text } = $.ui.resolve(e)
@@ -429,41 +447,41 @@ export const register: Register = on => {
     const hide = <Button key="hide" label="×" onPress={() => update($, isHidden, () => true)} />
 
     if (current === 'offer') {
-      return (
+      return stack(Box, below, (
         <Box paddingX={1} gap={1}>
           <Text color={AMBER} weight="bold">⇄ Handoff</Text>
           <Text dimColor>{`${why}: writing a handoff now costs one full re-cache.`}</Text>
           <Button key="write" label="Write handoff" variant="primary" onPress={() => void generate($, 'cold')} />
           {hide}
         </Box>
-      )
+      ))
     }
 
     if (current === 'working') {
-      return (
+      return stack(Box, below, (
         <Box paddingX={1} gap={1}>
           <Text color={AMBER} weight="bold">⇄ Handoff</Text>
           <Text dimColor>{`${why}: writing the handoff prompt from the whole chat...`}</Text>
         </Box>
-      )
+      ))
     }
 
     if (current === 'failed') {
-      return (
+      return stack(Box, below, (
         <Box paddingX={1} gap={1}>
           <Text color={RED} weight="bold">⇄ Handoff failed</Text>
           <Text dimColor wrap="truncate-end">{await read($, error)}</Text>
           <Button key="retry" label="Retry" onPress={() => void generate($, 'command')} />
           {hide}
         </Box>
-      )
+      ))
     }
 
     const path = await read($, savedPath)
     const isStale = (await $.session.turns()) > (await read($, atTurns))
     const launching = await read($, isLaunching)
 
-    return (
+    return stack(Box, below, (
       <Box flexDirection="column" paddingX={1}>
         <Box gap={1}>
           <Text color={GREEN} weight="bold">⇄ Handoff ready</Text>
@@ -490,6 +508,6 @@ export const register: Register = on => {
           {`${isStale ? 'The chat moved on since: /handover writes a fresh one. ' : ''}${path ? `Saved to ${path} (send this file to a teammate)` : '/handover show prints it as plain text'}`}
         </Text>
       </Box>
-    )
+    ))
   })
 }

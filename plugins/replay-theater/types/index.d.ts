@@ -3,7 +3,7 @@ export type Step = {
   // What the tool call was: an Edit, a Write that made a new file, a Write over an existing one.
   kind: 'edit' | 'create' | 'overwrite'
   path: string
-  lines: { sign: '+' | '-'; text: string }[]
+  lines: { sign: '+' | '-' | ' '; text: string; o?: number; w?: number }[]
   added: number
   removed: number
   isCut: boolean

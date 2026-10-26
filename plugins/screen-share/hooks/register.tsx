@@ -3,7 +3,7 @@ import type { EngineInterface, Register } from 'claude-code'
 
 import { BAR, createMasker } from './mask'
 
-const GREY = '#9ca3af'
+const GREY = 'inactive'
 const STATUS = '▒ screen-share ON'
 
 const isActive = atom({ plugin: 'screen-share', key: 'isActive' } as const, false)
@@ -22,6 +22,17 @@ const masker = createMasker()
 
 const prose = async ($: EngineInterface) => ({ isProse: true, names: await read($, names) })
 const raw = async ($: EngineInterface) => ({ isProse: false, names: await read($, names) })
+
+// A band stacks above whatever the mods beneath it drew, instead of replacing it: Reflect's card and Cache Clock's timer can show together.
+const stack = (Box: any, below: unknown, mine: any) =>
+  below ? (
+    <Box flexDirection="column">
+      {mine}
+      {below}
+    </Box>
+  ) : (
+    mine
+  )
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
@@ -144,18 +155,25 @@ export const register: Register = on => {
   })
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
+    const below = await next(e)
+    const hiddenBy = (await $.state.get({ plugin: 'switchboard', key: 'hidden' } as const)).value ?? []
+
+    if (hiddenBy.includes($.plugin.name)) {
+      return below
+    }
+
     if (e.props.hasSurvey || !(await read($, isActive))) {
-      return next(e)
+      return below
     }
 
     const { Box, Button, Text } = $.ui.resolve(e)
 
-    return (
+    return stack(Box, below, (
       <Box paddingX={1} gap={1}>
         <Text color={GREY} weight="bold">{`${BAR} Screen-share ON`}</Text>
         <Text dimColor>names, emails, phones and amounts are hidden on screen · what you type below is not</Text>
         <Button key="off" label="Turn off" onPress={() => turn($, false)} />
       </Box>
-    )
+    ))
   })
 }

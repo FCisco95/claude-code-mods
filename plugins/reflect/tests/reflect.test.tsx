@@ -132,6 +132,12 @@ for (const choice of ['everywhere', 'memory', 'vault', 'skip'] as const) {
     on('prompt.submit', (_, e) => ({ text: e.text }))
     on('ui.log', () => ({ value: undefined }))
     on('ui.toast', () => ({ value: undefined }))
+    // Nothing draws beneath the mod: the card stacks over an empty band.
+    on('ui.render', ($, e) => {
+      const { Box } = $.ui.resolve(e)
+
+      return <Box />
+    })
 
     await $.prompt.submit(PROMPT)
     await clock.settle()

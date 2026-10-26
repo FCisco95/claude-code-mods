@@ -88,7 +88,7 @@ test('/mods lists the mods, leaves out plain plugins, and a click switches one',
   expect(await ui.find({ type: 'Text', text: /Some Skill/ })).toBeUndefined()
   expect((await ui.find({ type: 'Text', text: /Counts down/ }))?.text).toBe('Counts down until the cache goes cold')
   expect((await ui.find({ type: 'Text', text: /\/keep/ }))?.text).toBe('/keep')
-  expect((await ui.find({ type: 'Text', text: /1 on of 2/ }))?.text).toBe('1 on of 2')
+  expect((await ui.find({ type: 'Text', text: /1 of 2 on/ }))?.text).toBe('1 of 2 on')
 
   await ui.press({ key: 'on-cache-clock@skills-dir' })
   expect(ran.some(argv => argv.join(' ') === 'claude plugin disable cache-clock@skills-dir --scope user')).toBe(true)

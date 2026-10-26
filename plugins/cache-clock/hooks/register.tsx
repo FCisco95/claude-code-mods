@@ -1,9 +1,9 @@
 import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
-const GREEN = '#16a34a'
-const AMBER = '#ca8a04'
-const RED = '#dc2626'
+const GREEN = 'success'
+const AMBER = 'warning'
+const RED = 'error'
 // Keep warm never runs longer than this.
 const MAX_KEEP_MS = 2 * 60 * 60 * 1000
 const TICK_MS = 1000
@@ -134,6 +134,17 @@ const ping = async ($: EngineInterface) => {
     isPinging = false
   }
 }
+
+// A band stacks above whatever the mods beneath it drew, instead of replacing it: Reflect's card and Cache Clock's timer can show together.
+const stack = (Box: any, below: unknown, mine: any) =>
+  below ? (
+    <Box flexDirection="column">
+      {mine}
+      {below}
+    </Box>
+  ) : (
+    mine
+  )
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
@@ -276,10 +287,17 @@ export const register: Register = on => {
   })
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
+    const below = await next(e)
+    const hiddenBy = (await $.state.get({ plugin: 'switchboard', key: 'hidden' } as const)).value ?? []
+
+    if (hiddenBy.includes($.plugin.name)) {
+      return below
+    }
+
     const last = await read($, lastRequestAt)
 
     if (last === 0 || e.props.hasSurvey || (await read($, isHidden))) {
-      return next(e)
+      return below
     }
 
     const { Box, Button, Text } = $.ui.resolve(e)
@@ -308,38 +326,38 @@ export const register: Register = on => {
     const hide = <Button key="hide" label="×" onPress={() => update($, isHidden, () => true)} />
 
     if (running) {
-      return (
+      return stack(Box, below, (
         <Box paddingX={1} gap={1}>
           <Text dimColor>⏱ Cache in use while Claude works</Text>
           {hide}
         </Box>
-      )
+      ))
     }
 
     if (ttl === 0) {
-      return (
+      return stack(Box, below, (
         <Box paddingX={1} gap={1}>
           <Text dimColor>⏱ Cache timer: this reply showed no cache lifetime</Text>
           {hide}
         </Box>
-      )
+      ))
     }
 
     if (!isWarm) {
-      return (
+      return stack(Box, below, (
         <Box paddingX={1} gap={1}>
           <Text color={RED} weight="bold">⏱ Cache cold</Text>
           <Text dimColor>{`your next message re-caches about ${formatTokens(tokens)} tokens at full price`}</Text>
           {hide}
         </Box>
-      )
+      ))
     }
 
     const color = remaining > ttl * 0.5 ? GREEN : remaining > 60_000 ? AMBER : RED
     const pings = await read($, pingCount)
     const ping_ = await read($, lastPing)
 
-    return (
+    return stack(Box, below, (
       <Box flexDirection="column" paddingX={1}>
         <Box gap={1}>
           <Text color={color} weight="bold">{`⏱ Cache warm ${formatClock(remaining)}`}</Text>
@@ -353,6 +371,6 @@ export const register: Register = on => {
           </Text>
         )}
       </Box>
-    )
+    ))
   })
 }

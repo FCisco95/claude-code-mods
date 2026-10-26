@@ -5,10 +5,10 @@ import type { Inventory } from '../types'
 import { EMPTY, fromMessages, iconOf, isEmpty, onPrompt, onSkill, onTodoTool, onToolRan, tidyPath } from './capture'
 
 const PANE = 'chat-inventory'
-const GREEN = '#16a34a'
-const ORANGE = '#c2410c'
+const GREEN = 'success'
+const ORANGE = 'claude'
 // One colour per connector, picked from its name, so a connector keeps its colour all chat.
-const BADGES = ['#2563eb', '#db2777', '#ea580c', '#16a34a', '#7c3aed', '#0891b2', '#ca8a04', '#dc2626']
+const BADGES = ['suggestion', 'permission', 'claude', 'success', 'merged', 'planMode', 'warning', 'error']
 // Rows each list may take before it says "+N more".
 const MAX_TODOS = 10
 const MAX_CONNECTORS = 8
@@ -185,7 +185,7 @@ export const register: Register = on => {
                     {iconOf(c.name) ? (
                       <Text>{` ${iconOf(c.name)}`}</Text>
                     ) : (
-                      <Text backgroundColor={badgeColor(c.name)} color="white" weight="bold">{` ${c.name.charAt(0).toUpperCase()} `}</Text>
+                      <Text backgroundColor={badgeColor(c.name)} color="inverseText" weight="bold">{` ${c.name.charAt(0).toUpperCase()} `}</Text>
                     )}
                     <Box flexDirection="column">
                       <Text wrap="truncate-end">{c.name}</Text>

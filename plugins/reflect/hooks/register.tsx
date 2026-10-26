@@ -6,7 +6,7 @@ import { CHECK_MODEL, CHECK_SYSTEM, checkPrompt, parseVerdict, ruleKey, shouldCh
 import { DESTINATIONS } from './destinations'
 import type { Config, Io } from './destinations'
 
-const ORANGE = '#c2410c'
+const ORANGE = 'claude'
 // Rules waiting for a choice; a burst of prompts cannot stack more than this.
 const MAX_PENDING = 3
 
@@ -69,6 +69,17 @@ const check = async ($: EngineInterface, text: string) => {
   }
 }
 
+// A band stacks above whatever the mods beneath it drew, instead of replacing it: Reflect's card and Cache Clock's timer can show together.
+const stack = (Box: any, below: unknown, mine: any) =>
+  below ? (
+    <Box flexDirection="column">
+      {mine}
+      {below}
+    </Box>
+  ) : (
+    mine
+  )
+
 export const register: Register = (on, options) => {
   const config: Config = {
     rulesFile: String(options.rulesFile ?? ''),
@@ -100,17 +111,24 @@ export const register: Register = (on, options) => {
   })
 
   on('ui.render', { component: 'AbovePrompt' }, async ($, e, next) => {
+    const below = await next(e)
+    const hiddenBy = (await $.state.get({ plugin: 'switchboard', key: 'hidden' } as const)).value ?? []
+
+    if (hiddenBy.includes($.plugin.name)) {
+      return below
+    }
+
     const list = (await read($, pending)) as Candidate[]
     const current = list[0]
 
     if (!current || e.props.hasSurvey) {
-      return next(e)
+      return below
     }
 
     const { Box, Button, Text } = $.ui.resolve(e)
     const drop = () => update($, pending, l => l.filter(c => c.id !== current.id))
 
-    return (
+    return stack(Box, below, (
       <Box flexDirection="column" paddingX={1} borderStyle="round" borderColor={ORANGE}>
         <Box gap={1}>
           <Text color={ORANGE}>●</Text>
@@ -154,6 +172,6 @@ export const register: Register = (on, options) => {
           />
         </Box>
       </Box>
-    )
+    ))
   })
 }

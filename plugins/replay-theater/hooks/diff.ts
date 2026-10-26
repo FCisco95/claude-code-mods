@@ -1,6 +1,7 @@
 // A small line diff. Pure: no file, model or screen is touched here.
 
-export type Line = { sign: '+' | '-'; text: string }
+// `o` and `w` are where the line stands in the old and in the new file (for a `+` line `o` is the spot it comes in at).
+export type Line = { sign: '+' | '-' | ' '; text: string; o?: number; w?: number }
 
 export type Change = { lines: Line[]; added: number; removed: number; isCut: boolean }
 
@@ -33,6 +34,7 @@ const middle = (a: string[], b: string[]): Line[] => {
 
   while (i < a.length && j < b.length) {
     if (a[i] === b[j]) {
+      out.push({ sign: ' ', text: a[i]! })
       i++
       j++
     } else if (table[(i + 1) * cols + j]! >= table[i * cols + j + 1]!) {
@@ -53,7 +55,10 @@ const middle = (a: string[], b: string[]): Line[] => {
   return out
 }
 
-// What changed between two texts: lines that went (`-`) and lines that came (`+`), unchanged lines left out.
+// Unchanged lines kept on each side of the change, so it reads in place.
+const CONTEXT = 3
+
+// What changed between two texts: lines that went (`-`), lines that came (`+`) and a little unchanged context around them.
 export const diffText = (before: string, after: string): Change => {
   const a = split(before)
   const b = split(after)
@@ -69,9 +74,72 @@ export const diffText = (before: string, after: string): Change => {
     tail++
   }
 
-  const all = middle(a.slice(head, a.length - tail), b.slice(head, b.length - tail))
-  const added = all.filter(l => l.sign === '+').length
-  const removed = all.length - added
+  const body = middle(a.slice(head, a.length - tail), b.slice(head, b.length - tail))
+  const added = body.filter(l => l.sign === '+').length
+  const removed = body.filter(l => l.sign === '-').length
 
-  return { lines: all.slice(0, MAX_LINES), added, removed, isCut: all.length > MAX_LINES }
+  if (added + removed === 0) {
+    return { lines: [], added, removed, isCut: false }
+  }
+
+  const lead = Math.max(0, head - CONTEXT)
+  const full: Line[] = [
+    ...a.slice(lead, head).map((text): Line => ({ sign: ' ', text })),
+    ...body,
+    ...b.slice(b.length - tail, b.length - tail + CONTEXT).map((text): Line => ({ sign: ' ', text })),
+  ]
+  let oldN = lead + 1
+  let newN = lead + 1
+  const numbered = full.map((l): Line => {
+    const placed = { ...l, o: oldN, w: newN }
+
+    oldN += l.sign === '+' ? 0 : 1
+    newN += l.sign === '-' ? 0 : 1
+
+    return placed
+  })
+
+  // An unchanged line stays only when it sits within CONTEXT lines of a change.
+  const near = numbered.map((_, k) => numbered.slice(Math.max(0, k - CONTEXT), k + CONTEXT + 1).some(l => l.sign !== ' '))
+  const kept = numbered.filter((_, k) => near[k])
+  const lines: Line[] = []
+  let changes = 0
+
+  for (const line of kept) {
+    if (line.sign !== ' ' && ++changes > MAX_LINES) {
+      break
+    }
+
+    lines.push(line)
+  }
+
+  return { lines, added, removed, isCut: added + removed > MAX_LINES }
+}
+
+// The lines as unified-diff hunks, which the engine's own `Code` component draws with gutters and the theme's diff colours.
+export const toUnified = (lines: Line[]): string => {
+  const hunks: Line[][] = []
+  let prev: Line | undefined
+
+  for (const line of lines) {
+    const follows = prev !== undefined && line.o === prev.o! + (prev.sign === '+' ? 0 : 1) && line.w === prev.w! + (prev.sign === '-' ? 0 : 1)
+
+    if (follows) {
+      hunks[hunks.length - 1]!.push(line)
+    } else {
+      hunks.push([line])
+    }
+
+    prev = line
+  }
+
+  return hunks
+    .map(h => {
+      const oldCount = h.filter(l => l.sign !== '+').length
+      const newCount = h.filter(l => l.sign !== '-').length
+      const head = `@@ -${h[0]!.o},${oldCount} +${h[0]!.w},${newCount} @@`
+
+      return [head, ...h.map(l => `${l.sign}${l.text}`)].join('\n')
+    })
+    .join('\n')
 }

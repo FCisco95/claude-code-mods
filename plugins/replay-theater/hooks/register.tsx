@@ -2,23 +2,31 @@ import { atom, read, update } from 'claude-code'
 import type { EngineInterface, Register } from 'claude-code'
 
 import type { Step } from '../types'
-import { diffText } from './diff'
+import { diffText, toUnified } from './diff'
 import type { Change } from './diff'
 
 const PANE = 'replay-theater'
 const MAX_STEPS = 200
-const RED = '#dc2626'
-const GREEN = '#16a34a'
-const ACCENT = '#be185d'
+// Theme keys, not hex: they follow the person's theme and every terminal draws them.
+const RED = 'error'
+const GREEN = 'success'
+const ACCENT = 'claude'
+const BADGE: Record<Step['kind'], string> = { edit: 'suggestion', create: 'success', overwrite: 'warning' }
 
 // Change the tag when a step's fields change: it declines what an earlier version stored, which outlives a reload.
-const steps = atom({ plugin: 'replay-theater', key: 'steps' } as const, [] as Step[], { shape: 'steps-1' })
+const steps = atom({ plugin: 'replay-theater', key: 'steps' } as const, [] as Step[], { shape: 'steps-3' })
 const at = atom({ plugin: 'replay-theater', key: 'at' } as const, 0)
 
 // The first edit of a new turn starts a new list: the pane always holds the last turn that edited files.
 let isNewTurn = false
 
 const KIND: Record<Step['kind'], string> = { edit: 'Edit', create: 'New file', overwrite: 'Rewrite' }
+
+const split = (path: string): [string, string] => {
+  const cut = path.lastIndexOf('/')
+
+  return cut < 0 ? ['', path] : [path.slice(0, cut + 1), path.slice(cut + 1)]
+}
 
 const tidy = async ($: EngineInterface, path: string) => {
   const home = (await $.env.get('USERPROFILE')) ?? (await $.env.get('HOME')) ?? ''
@@ -108,13 +116,13 @@ export const register: Register = on => {
     }
 
     await update($, at, () => 0)
-    await $.ui.open({ id: PANE, title: 'Replay Theater', focus: true, closeOnEscape: true, rows: 18 })
+    await $.ui.open({ id: PANE, title: 'Replay Theater', focus: true, closeOnEscape: true, rows: 18, columns: 80 })
 
     return { text: `Replaying ${total} edit${total === 1 ? '' : 's'} from the last turn. p = previous, n = next, c = close.` }
   })
 
   on('ui.render', { component: 'Pane', requestId: PANE }, async ($, e) => {
-    const { Box, Button, Text } = $.ui.resolve(e)
+    const { Box, Button, Code, Text } = $.ui.resolve(e)
     const list = await read($, steps)
     const index = Math.max(0, Math.min(list.length - 1, await read($, at)))
     const step = list[index]
@@ -126,9 +134,10 @@ export const register: Register = on => {
     // At most nine step buttons, windowed around the current step.
     const first = Math.max(0, Math.min(index - 4, list.length - 9))
     const chips = list.slice(first, first + 9).map((_, k) => first + k)
-    const room = Math.max(4, (e.viewport?.rows ?? 24) - 10)
+    const room = Math.max(6, (e.viewport?.rows ?? 24) - 11)
     const shown = step.lines.slice(0, room)
-    const hidden = step.added + step.removed - shown.length
+    const hidden = step.added + step.removed - shown.filter(l => l.sign !== ' ').length
+    const [dir, name] = split(step.path)
 
     return (
       <Box flexDirection="column" paddingX={1}>
@@ -141,16 +150,18 @@ export const register: Register = on => {
             <Button key={`step-${i}`} label={String(i + 1)} variant={i === index ? 'primary' : undefined} onPress={() => jumpTo($, i)} />
           ))}
         </Box>
-        <Text color="suggestion" weight="bold" wrap="truncate-start">{step.path}</Text>
         <Box gap={1}>
-          <Text dimColor>{`${KIND[step.kind]}${step.isReplaceAll ? ' (every match)' : ''}`}</Text>
-          <Text color={GREEN}>{`+${step.added}`}</Text>
-          <Text color={RED}>{`-${step.removed}`}</Text>
+          <Text color="inverseText" backgroundColor={BADGE[step.kind]} weight="bold">{` ${KIND[step.kind].toUpperCase()} `}</Text>
+          <Text color={GREEN} weight="bold">{`+${step.added}`}</Text>
+          <Text color={RED} weight="bold">{`-${step.removed}`}</Text>
+          {step.isReplaceAll && <Text dimColor>every match</Text>}
         </Box>
-        <Box flexDirection="column">
-          {shown.map((line, k) => (
-            <Text key={`line-${k}`} color={line.sign === '+' ? GREEN : RED}>{`${line.sign} ${line.text}`}</Text>
-          ))}
+        <Box>
+          {dir !== '' && <Text dimColor wrap="truncate-start">{dir}</Text>}
+          <Text color="suggestion" weight="bold" wrap="truncate-start">{name}</Text>
+        </Box>
+        <Box flexDirection="column" marginTop={1}>
+          {shown.length > 0 && <Code source={toUnified(shown)} format="diff" path={step.path} wrap="truncate-end" />}
           {hidden > 0 && <Text dimColor>{`... ${hidden} more changed line${hidden === 1 ? '' : 's'} not shown`}</Text>}
           {step.lines.length === 0 && <Text dimColor>No line changed (whitespace or identical text).</Text>}
         </Box>
