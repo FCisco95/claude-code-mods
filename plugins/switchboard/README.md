@@ -2,6 +2,10 @@
 
 A Claude Code mod for keeping track of your mods. Type `/mods` and one list opens with every mod you run: its name, what it does, its slash command, and a switch to turn it on or off. A mod that adds a pane or a band to your screen also gets a `Hide panel` button. Mods you add or remove later show up in the list by themselves.
 
+![switchboard](../../assets/switchboard.png)
+
+*/mods: one list of every mod, each with an on/off switch and, where it has one, a Hide panel button.*
+
 Once you build, install and test a lot of mods, it is easy to lose track of which ones are on. This is the one place that tells you, and lets you switch one off in the middle of a chat when it gets in the way.
 
 ## Use
@@ -23,8 +27,8 @@ Any enabled or disabled plugin whose `hooks/hooks.json` names a hooks module: yo
 
 ## Limits
 
-- The switch runs `claude plugin enable` or `claude plugin disable` at the scope the mod was installed in, so it changes your settings file, and the list updates at once. In a chat that is already open, a mod you switched off can leave what it had already put on screen (a band above the prompt, say) until you start a new chat. To get a panel out of the way right now, use `Hide panel`.
-- `Hide panel` finds out which mod drew a band or pane by reading the order the screen was built in. It only acts on bands and panes drawn through the normal `AbovePrompt` and `Pane` places, and only the ones another mod draws. It does not hide a status line entry or a toast.
+- The switch runs `claude plugin enable` or `claude plugin disable` at the scope the mod was installed in, so it changes your settings file, and the list updates at once. In a chat that is already open, a mod you switched off can leave what it had already put on screen (a band above the prompt, say) until you start a new chat, and a mod you switched on may not have its slash command until you start one. To get a panel out of the way right now, use `Hide panel`.
+- `Hide panel` on a pane swaps it for a one-line "Hidden" note; the tab stays. On a band above the prompt, the mod itself stops drawing it: Cache Clock, Chat Handoff, Helper Desk, Reflect and Screen-Share read the hidden list from Switchboard. A band from a mod that does not read that list cannot be hidden this way. A status line entry or a toast is never hidden.
 - A mod shows `Hide panel` when its code opens a pane or draws a band. The check is a plain search of its source, so a mod that does it in an unusual way may be missing the button.
 - Nothing is sent anywhere and no model is called. It runs `claude plugin list --json` on your machine.
 

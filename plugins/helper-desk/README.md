@@ -2,6 +2,10 @@
 
 A Claude Code mod that shows what Claude and its subagents are doing, without a single model call.
 
+![helper-desk](../../assets/helper-desk.gif)
+
+*Two subagents running in parallel, then finishing: one card each, with step, model, tokens and time.*
+
 - **Task bar.** A purple bar above the prompt fills as Claude ticks off its to-do list.
 - **Subagent panel.** `/helper-desk` opens a side panel with one live card per subagent: its step, model, tokens and time.
 

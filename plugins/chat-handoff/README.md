@@ -2,6 +2,10 @@
 
 A Claude Code mod that moves a long chat into a fresh one without losing context.
 
+![chat-handoff](../../assets/chat-handoff.png)
+
+*The handoff band appears when the handoff is written. Start the fresh chat, copy it, or dismiss it.*
+
 Long chats rot: the fuller the context window, the more details Claude misses. Compacting loses detail through summarizing, and a cold prompt cache makes every new message cost more. Handoff writes a detailed handoff prompt for a fresh chat, and shows a button to start that chat when you choose.
 
 ## Triggers

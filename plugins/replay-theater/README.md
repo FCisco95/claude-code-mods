@@ -2,6 +2,10 @@
 
 A Claude Code mod for reviewing edits. After Claude changes your files, type `/replay` and step through every edit it made in the last turn, one change at a time: the file, what was removed (red `-`) and what was added (green `+`). No more comparing versions by hand or asking Claude to list what it changed.
 
+![replay-theater](../../assets/replay-theater.gif)
+
+*/replay steps through the last turn's edits (p = previous, n = next, c = close). The diff uses the theme's own colours and syntax highlighting.*
+
 ## Use
 
 | Key | What it does |
@@ -12,7 +16,7 @@ A Claude Code mod for reviewing edits. After Claude changes your files, type `/r
 | a step number | Jump to that edit (up to nine numbers show, around the current one) |
 | `c`, `Close` or Esc | Close the pane |
 
-Each step shows its file (with `~` for your home folder), whether it was an edit, a new file or a rewrite of an existing file, and the count of lines added and removed. Lines that did not change are left out.
+Each step shows a coloured badge (edit, new file or rewrite), the count of lines added and removed, and the file name. The change is drawn with Claude Code's own diff view: line numbers, three lines of context around each change, the theme's red and green, and syntax highlighting chosen by file type. Changes far apart in a file are separate hunks.
 
 ## Limits
 

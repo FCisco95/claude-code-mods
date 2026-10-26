@@ -2,6 +2,10 @@
 
 A Claude Code mod for privacy. Type `/screen-share` before you record a video, join a call or present, and every name, email address, phone number and money amount on screen turns into a grey bar (`▒▒▒▒▒▒▒▒`). Type it again to turn the mode off.
 
+![screen-share](../../assets/screen-share.png)
+
+*The same invoice with /screen-share off and on. The data shown here is fictional.*
+
 Claude still reads the real text. The mod only changes how the transcript is drawn, so you can use your real chats while sharing, with no invented client names.
 
 ## Use

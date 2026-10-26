@@ -2,6 +2,10 @@
 
 Nine small, free mods for [Claude Code](https://claude.com/claude-code) that make long sessions cheaper and easier to read. Each one is a single folder you can read in ten minutes. None of them sends your chat anywhere except through Claude Code itself.
 
+![Switchboard, Replay Theater and Helper Desk side by side](assets/hero.png)
+
+*Three of the nine, in a real Claude Code session: the Switchboard list, a Replay Theater diff and Helper Desk's subagent cards.*
+
 | Mod | What it does | Model calls |
 |---|---|---|
 | [**cache-clock**](plugins/cache-clock) | Countdown above the prompt until the prompt cache goes cold. Optional keep-warm ping. | Only when keep warm is on |
@@ -18,6 +22,8 @@ Nine small, free mods for [Claude Code](https://claude.com/claude-code) that mak
  ⇄ Handoff ready   cache went cold · 875 words   [ Start fresh chat ]  [ Copy ]  [ × ]
    Saved to ~/.claude/handoffs/20261026-1447-bc05342a.md (send this file to a teammate)
 ```
+
+Bands above the prompt (Cache Clock, Chat Handoff, Helper Desk, Reflect, Screen-Share) stack: if two have something to show, both are drawn, and Switchboard's `Hide panel` hides one without touching the rest.
 
 ## Install
 

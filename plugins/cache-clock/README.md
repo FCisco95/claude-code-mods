@@ -2,6 +2,10 @@
 
 A Claude Code mod that shows when this chat's prompt cache goes cold, and can keep it warm.
 
+![cache-clock](../../assets/cache-clock.png)
+
+*The countdown sits above the prompt: green while the cache is warm, then amber and red as it runs out. Keep warm pings it to hold the cache.*
+
 Returning to a chat after its cache has gone cold makes Claude reread and re-save the whole conversation at full price. On a long Opus chat that is the difference between roughly a dollar or more and a few cents. The timer is invisible, so this mod draws it above the prompt.
 
 Inspired by Karan Binsal's "cache tax" mod. Credit and thanks to Karan Binsal for the idea.

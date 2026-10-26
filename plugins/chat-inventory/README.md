@@ -2,6 +2,10 @@
 
 A Claude Code mod that adds a side panel titled "In this chat", so a long task is not a black box.
 
+![chat-inventory](../../assets/chat-inventory.png)
+
+*The "In this chat" panel: connectors with a call count, and the files read and created. Nothing here costs a model call.*
+
 The panel lists, live:
 
 - **To-do**: the list Claude is working through, with the goal at the top, `3 of 6` and a tick, a marker or a circle per step.

@@ -2,6 +2,10 @@
 
 A Claude Code mod that lets you decide what Claude remembers about your rules.
 
+![reflect](../../assets/reflect.png)
+
+*A lasting rule is noticed in your prompt. Nothing is saved until you press a button. It stacks under the Cache Clock band.*
+
 When you tell Claude something that should hold from now on ("never use em dashes", "keep LinkedIn hooks under 12 words"), a card appears above the prompt and asks where to save it. Nothing is saved until you press a button, and `Skip` saves nothing.
 
 ```

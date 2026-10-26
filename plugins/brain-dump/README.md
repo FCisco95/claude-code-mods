@@ -2,6 +2,10 @@
 
 A Claude Code mod that turns a long, messy prompt into a clear one before it is sent.
 
+![brain-dump](../../assets/brain-dump.png)
+
+*Brain-Dump holds a long, rambling prompt back and asks one short question about a gap. Here the questions came out in Portuguese.*
+
 When you submit a prompt over 120 words from the prompt box, the mod holds it back, asks 2 to 3 short questions about the gaps, then fills the prompt box with a four-part prompt: the job, why, guardrails, and what done means. You read it, edit it and press Enter yourself.
 
 ## Behaviour
