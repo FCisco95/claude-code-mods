@@ -1,6 +1,6 @@
 # Claude Code mods
 
-Six small, free mods for [Claude Code](https://claude.com/claude-code) that make long sessions cheaper and easier to read. Each one is a single folder you can read in ten minutes. None of them sends your chat anywhere except through Claude Code itself.
+Nine small, free mods for [Claude Code](https://claude.com/claude-code) that make long sessions cheaper and easier to read. Each one is a single folder you can read in ten minutes. None of them sends your chat anywhere except through Claude Code itself.
 
 | Mod | What it does | Model calls |
 |---|---|---|
@@ -29,7 +29,7 @@ Requires Claude Code 2.1.292 or later with mods enabled. `cache-clock` (and so `
 /plugin install cache-clock --marketplace FCisco95/claude-code-mods
 ```
 
-**From a clone** (all six, loads in every project):
+**From a clone** (all nine, loads in every project):
 
 ```sh
 git clone https://github.com/FCisco95/claude-code-mods
@@ -73,8 +73,9 @@ Mods installed this way are user-level: they run in every project with no setup.
 ## Status and honesty
 
 - Built on the early-access Claude Code mod API (Claude Code 2.1.310). The API can change; if a mod breaks after an update, open an issue.
-- Tested by hand in real sessions and with `claude plugin validate`. `chat-handoff` also has a unit test for the transcript reader (`claude plugin test plugins/chat-handoff`).
-- Not yet exercised live: the 250k and cold-cache triggers of `chat-handoff`, and the long-prompt hold of `brain-dump`.
+- Tested by hand in real sessions and with `claude plugin validate`. Most mods also ship unit tests (`claude plugin test plugins/<name>`).
+- Not yet exercised live: the cold-cache offer of `chat-handoff`, the long-prompt hold of `brain-dump`, and the `Save to vault` button of `reflect`.
+- Switching a mod off in `/mods` (switchboard) takes effect in new chats. A chat that is already open may keep showing what the mod drew; for `screen-share`, type `/screen-share` again to stop it.
 - `/handoff` is claimed by some other plugins, so `chat-handoff` answers to `/handover` and also tries `/handoff`.
 
 ## Credit
