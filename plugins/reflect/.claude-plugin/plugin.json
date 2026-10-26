@@ -1,0 +1,27 @@
+{
+  "name": "reflect",
+  "version": "0.1.0",
+  "description": "Notices when you give Claude a lasting rule (\"never use em dashes\") and asks where to save it: a global rules file, Claude's memory, your vault, or nowhere. Nothing is saved without your choice.",
+  "author": {
+    "name": "Cisco Vieira",
+    "url": "https://github.com/FCisco95"
+  },
+  "homepage": "https://github.com/FCisco95/claude-code-mods/tree/main/plugins/reflect",
+  "repository": "https://github.com/FCisco95/claude-code-mods",
+  "license": "MIT",
+  "types": "./types/index.d.ts",
+  "userConfig": {
+    "rulesFile": {
+      "type": "string",
+      "title": "File for \"Save everywhere\"",
+      "description": "Absolute path of the file that gets the rule. Empty means ~/.claude/rules/reflect.md, which Claude Code loads in every project.",
+      "default": ""
+    },
+    "vaultFolder": {
+      "type": "string",
+      "title": "Rules folder for \"Save to vault\"",
+      "description": "Absolute path of the folder in your vault or second brain where each rule becomes a note. Empty hides the vault button.",
+      "default": ""
+    }
+  }
+}

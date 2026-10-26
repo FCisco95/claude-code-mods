@@ -1,11 +1,36 @@
 {
   "name": "claude-code-mods",
-  "owner": { "name": "Cisco Vieira" },
-  "metadata": { "description": "Small, free mods that make long Claude Code sessions cheaper and easier to read." },
+  "owner": {
+    "name": "Cisco Vieira"
+  },
+  "metadata": {
+    "description": "Small, free mods that make long Claude Code sessions cheaper and easier to read."
+  },
   "plugins": [
-    { "name": "brain-dump", "source": "./plugins/brain-dump", "description": "Turns a long, messy prompt into a clear four-part prompt before it is sent." },
-    { "name": "cache-clock", "source": "./plugins/cache-clock", "description": "Countdown to a cold prompt cache, with an optional keep-warm ping." },
-    { "name": "chat-handoff", "source": "./plugins/chat-handoff", "description": "Writes a detailed handoff prompt for a fresh chat and starts it when you click." },
-    { "name": "helper-desk", "source": "./plugins/helper-desk", "description": "Live task bar and one card per subagent. No model calls." }
+    {
+      "name": "brain-dump",
+      "source": "./plugins/brain-dump",
+      "description": "Turns a long, messy prompt into a clear four-part prompt before it is sent."
+    },
+    {
+      "name": "cache-clock",
+      "source": "./plugins/cache-clock",
+      "description": "Countdown to a cold prompt cache, with an optional keep-warm ping."
+    },
+    {
+      "name": "chat-handoff",
+      "source": "./plugins/chat-handoff",
+      "description": "Writes a detailed handoff prompt for a fresh chat and starts it when you click."
+    },
+    {
+      "name": "helper-desk",
+      "source": "./plugins/helper-desk",
+      "description": "Live task bar and one card per subagent. No model calls."
+    },
+    {
+      "name": "reflect",
+      "source": "./plugins/reflect",
+      "description": "Notices a lasting rule in your prompt and asks where to save it. Nothing is saved without your choice."
+    }
   ]
 }

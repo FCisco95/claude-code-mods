@@ -1,12 +1,13 @@
 # Claude Code mods
 
-Four small, free mods for [Claude Code](https://claude.com/claude-code) that make long sessions cheaper and easier to read. Each one is a single folder you can read in ten minutes. None of them sends your chat anywhere except through Claude Code itself.
+Five small, free mods for [Claude Code](https://claude.com/claude-code) that make long sessions cheaper and easier to read. Each one is a single folder you can read in ten minutes. None of them sends your chat anywhere except through Claude Code itself.
 
 | Mod | What it does | Model calls |
 |---|---|---|
 | [**cache-clock**](plugins/cache-clock) | Countdown above the prompt until the prompt cache goes cold. Optional keep-warm ping. | Only when keep warm is on |
 | [**chat-handoff**](plugins/chat-handoff) | At 250k tokens, on a cold cache, or on `/handover`, writes a detailed prompt for a fresh chat and shows a `Start fresh chat` button. Nothing starts until you click. | One per handoff |
 | [**helper-desk**](plugins/helper-desk) | Task bar that fills as Claude ticks off its to-do list, plus one live card per subagent. | None |
+| [**reflect**](plugins/reflect) | Notices a lasting rule in your prompt ("never use em dashes") and asks where to save it: a global rules file, Claude's memory, your vault, or nowhere. Nothing is saved without a click. | One short Haiku call per prompt |
 | [**brain-dump**](plugins/brain-dump) | Holds a long, messy prompt, asks 2 to 3 questions about the gaps, and fills the prompt box with a clear four-part prompt. | Two, only for long prompts |
 
 ```
@@ -24,7 +25,7 @@ Requires Claude Code 2.1.275 or later with mods enabled.
 /plugin install cache-clock --marketplace FCisco95/claude-code-mods
 ```
 
-**From a clone** (all four, loads in every project):
+**From a clone** (all five, loads in every project):
 
 ```sh
 git clone https://github.com/FCisco95/claude-code-mods
@@ -36,6 +37,20 @@ cd claude-code-mods
 Pass mod names to install only some: `./install.sh cache-clock chat-handoff`. Start a new Claude Code session afterwards.
 
 `chat-handoff` reads Cache Clock's state for its cold-cache trigger, so install both.
+
+## Global by default, off per project
+
+Mods installed this way are user-level: they run in every project with no setup. To turn one off in a single project, put this in that project's `.claude/settings.json` (other projects are untouched):
+
+```json
+{ "enabledPlugins": { "helper-desk@skills-dir": false } }
+```
+
+## Adding a mod
+
+1. Put the folder in `plugins/<name>/` (`.claude-plugin/plugin.json`, `hooks/hooks.json`, `hooks/register.tsx`).
+2. Add it to `.claude-plugin/marketplace.json`.
+3. Run `./install.sh <name>` (or `./install.ps1 <name>`). It copies to `~/.claude/skills/<name>`, which makes it global.
 
 ## Status and honesty
 

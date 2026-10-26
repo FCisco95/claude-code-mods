@@ -1,6 +1,6 @@
 # Copies the mods into ~/.claude/skills, where Claude Code loads them in every project.
-# Usage: ./install.ps1 [mod ...]   (no arguments installs all four)
-param([string[]]$Mods = @('brain-dump', 'cache-clock', 'chat-handoff', 'helper-desk'))
+# Usage: ./install.ps1 [mod ...]   (no arguments installs all)
+param([string[]]$Mods = @('brain-dump', 'cache-clock', 'chat-handoff', 'helper-desk', 'reflect'))
 $ErrorActionPreference = 'Stop'
 $root = if ($env:CLAUDE_CONFIG_DIR) { $env:CLAUDE_CONFIG_DIR } else { Join-Path $HOME '.claude' }
 $dest = Join-Path $root 'skills'
