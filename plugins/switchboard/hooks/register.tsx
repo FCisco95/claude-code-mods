@@ -108,7 +108,7 @@ const toggle = async ($: EngineInterface, mod: Mod) => {
       run.exitCode === 0
         ? mod.isEnabled
           ? `${mod.title} is off in every chat. This chat may keep showing what it already drew until you start a new chat.`
-          : `${mod.title} is on in every chat.`
+          : `${mod.title} is on in every chat. A chat that is already open may need a restart before its command works.`
         : `Could not switch ${mod.title} ${mod.isEnabled ? 'off' : 'on'}: ${(run.stderr || run.stdout).trim().split('\n')[0] ?? 'unknown error'}`,
     )
   } catch (e) {
@@ -203,6 +203,7 @@ export const register: Register = on => {
                   <Button key={`eye-${mod.id}`} label={isHidden ? 'Show panel' : 'Hide panel'} onPress={() => toggleHidden($, mod)} />
                 )}
                 <Text weight="bold" dimColor={!mod.isEnabled}>{mod.title}</Text>
+                {isHidden && mod.isEnabled && <Text color="warning">hidden</Text>}
               </Box>
               {mod.description !== '' && <Text dimColor wrap="truncate-end">{mod.description}</Text>}
               {mod.command !== '' && <Text dimColor italic>{`/${mod.command}`}</Text>}

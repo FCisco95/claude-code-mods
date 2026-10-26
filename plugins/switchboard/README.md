@@ -2,9 +2,9 @@
 
 A Claude Code mod for keeping track of your mods. Type `/mods` and one list opens with every mod you run: its name, what it does, its slash command, and a switch to turn it on or off. A mod that adds a pane or a band to your screen also gets a `Hide panel` button. Mods you add or remove later show up in the list by themselves.
 
-![switchboard](../../assets/switchboard.png)
+![switchboard](../../assets/switchboard.gif)
 
-*/mods: one list of every mod, each with an on/off switch and, where it has one, a Hide panel button.*
+*/mods lists every mod. Hide panel on Cache Clock makes its band vanish and tags it "hidden"; Show panel brings it back.*
 
 Once you build, install and test a lot of mods, it is easy to lose track of which ones are on. This is the one place that tells you, and lets you switch one off in the middle of a chat when it gets in the way.
 
