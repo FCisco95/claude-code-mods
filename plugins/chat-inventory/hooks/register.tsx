@@ -49,8 +49,6 @@ export const register: Register = on => {
       // an empty panel is better than a failed start
     }
 
-    void $.ui.open({ id: PANE, title: 'In this chat' })
-
     return next(e)
   })
 
