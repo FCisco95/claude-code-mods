@@ -46,6 +46,11 @@
       "name": "replay-theater",
       "source": "./plugins/replay-theater",
       "description": "Type /replay to step through every file edit Claude made in the last turn, one change at a time."
+    },
+    {
+      "name": "switchboard",
+      "source": "./plugins/switchboard",
+      "description": "Type /mods for one list of every mod you run: switch each on or off, hide its panel, and see new mods appear by themselves."
     }
   ]
 }

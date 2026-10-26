@@ -1,0 +1,13 @@
+{
+  "name": "switchboard",
+  "version": "0.1.0",
+  "description": "Type /mods to open one list of every mod you run. Switch each one on or off, hide its panel, and see new mods appear by themselves.",
+  "author": {
+    "name": "Cisco Vieira",
+    "url": "https://github.com/FCisco95"
+  },
+  "homepage": "https://github.com/FCisco95/claude-code-mods/tree/main/plugins/switchboard",
+  "repository": "https://github.com/FCisco95/claude-code-mods",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}
