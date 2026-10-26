@@ -1,0 +1,12 @@
+{
+  "name": "brain-dump",
+  "version": "0.1.0",
+  "description": "Holds back long, messy prompts, asks 2-3 questions about the gaps, then fills the prompt box with a clear four-part prompt (job, why, guardrails, done means).",
+  "author": {
+    "name": "Cisco Vieira",
+    "url": "https://github.com/FCisco95"
+  },
+  "homepage": "https://github.com/FCisco95/claude-code-mods/tree/main/plugins/brain-dump",
+  "repository": "https://github.com/FCisco95/claude-code-mods",
+  "license": "MIT"
+}

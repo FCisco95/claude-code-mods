@@ -1,0 +1,13 @@
+{
+  "name": "helper-desk",
+  "version": "0.1.0",
+  "description": "A purple task bar above the prompt that fills as Claude ticks off its to-do list, and a side panel with one live card per subagent (step, tokens, time). No AI calls, no cost.",
+  "author": {
+    "name": "Cisco Vieira",
+    "url": "https://github.com/FCisco95"
+  },
+  "homepage": "https://github.com/FCisco95/claude-code-mods/tree/main/plugins/helper-desk",
+  "repository": "https://github.com/FCisco95/claude-code-mods",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

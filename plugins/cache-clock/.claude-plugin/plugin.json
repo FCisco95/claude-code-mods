@@ -1,0 +1,13 @@
+{
+  "name": "cache-clock",
+  "version": "0.1.0",
+  "description": "Shows a countdown until this chat's prompt cache goes cold, and can keep it warm with a small hidden ping. Inspired by Karan Binsal's \"cache tax\" mod.",
+  "author": {
+    "name": "Cisco Vieira",
+    "url": "https://github.com/FCisco95"
+  },
+  "homepage": "https://github.com/FCisco95/claude-code-mods/tree/main/plugins/cache-clock",
+  "repository": "https://github.com/FCisco95/claude-code-mods",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

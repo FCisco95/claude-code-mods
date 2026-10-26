@@ -1,0 +1,16 @@
+{
+  "name": "chat-handoff",
+  "version": "0.1.0",
+  "description": "Moves a long chat into a fresh one without losing context: at 250k tokens, when the cache goes cold, or on /handover it writes a detailed handoff prompt and shows a button to start the fresh chat.",
+  "author": {
+    "name": "Cisco Vieira",
+    "url": "https://github.com/FCisco95"
+  },
+  "homepage": "https://github.com/FCisco95/claude-code-mods/tree/main/plugins/chat-handoff",
+  "repository": "https://github.com/FCisco95/claude-code-mods",
+  "license": "MIT",
+  "dependencies": [
+    "cache-clock"
+  ],
+  "types": "./types/index.d.ts"
+}
