@@ -1,11 +1,12 @@
 # Claude Code mods
 
-Five small, free mods for [Claude Code](https://claude.com/claude-code) that make long sessions cheaper and easier to read. Each one is a single folder you can read in ten minutes. None of them sends your chat anywhere except through Claude Code itself.
+Six small, free mods for [Claude Code](https://claude.com/claude-code) that make long sessions cheaper and easier to read. Each one is a single folder you can read in ten minutes. None of them sends your chat anywhere except through Claude Code itself.
 
 | Mod | What it does | Model calls |
 |---|---|---|
 | [**cache-clock**](plugins/cache-clock) | Countdown above the prompt until the prompt cache goes cold. Optional keep-warm ping. | Only when keep warm is on |
 | [**chat-handoff**](plugins/chat-handoff) | At 250k tokens, on a cold cache, or on `/handover`, writes a detailed prompt for a fresh chat and shows a `Start fresh chat` button. Nothing starts until you click. | One per handoff |
+| [**chat-inventory**](plugins/chat-inventory) | Side panel "In this chat": the to-do list with its goal, every connector with a call count, the skills used, and the files read and created. | None |
 | [**helper-desk**](plugins/helper-desk) | Task bar that fills as Claude ticks off its to-do list, plus one live card per subagent. | None |
 | [**reflect**](plugins/reflect) | Notices a lasting rule in your prompt ("never use em dashes") and asks where to save it: a global rules file, Claude's memory, your vault, or nowhere. Nothing is saved without a click. | One short Haiku call per prompt |
 | [**brain-dump**](plugins/brain-dump) | Holds a long, messy prompt, asks 2 to 3 questions about the gaps, and fills the prompt box with a clear four-part prompt. | Two, only for long prompts |
@@ -25,7 +26,7 @@ Requires Claude Code 2.1.292 or later with mods enabled. `cache-clock` (and so `
 /plugin install cache-clock --marketplace FCisco95/claude-code-mods
 ```
 
-**From a clone** (all five, loads in every project):
+**From a clone** (all six, loads in every project):
 
 ```sh
 git clone https://github.com/FCisco95/claude-code-mods

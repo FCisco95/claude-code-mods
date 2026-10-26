@@ -23,6 +23,11 @@
       "description": "Writes a detailed handoff prompt for a fresh chat and starts it when you click."
     },
     {
+      "name": "chat-inventory",
+      "source": "./plugins/chat-inventory",
+      "description": "Side panel \"In this chat\": to-do with goal, connectors with call counts, skills, files read and created. No model calls."
+    },
+    {
       "name": "helper-desk",
       "source": "./plugins/helper-desk",
       "description": "Live task bar and one card per subagent. No model calls."

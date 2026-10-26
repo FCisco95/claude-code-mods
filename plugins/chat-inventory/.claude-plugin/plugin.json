@@ -1,0 +1,13 @@
+{
+  "name": "chat-inventory",
+  "version": "0.1.0",
+  "description": "A side panel titled \"In this chat\" that shows what Claude is doing: the to-do list with its goal, every connector it calls with a call count, the skills it uses, and the files it reads and creates. It only watches; it makes no model calls.",
+  "author": {
+    "name": "Cisco Vieira",
+    "url": "https://github.com/FCisco95"
+  },
+  "homepage": "https://github.com/FCisco95/claude-code-mods/tree/main/plugins/chat-inventory",
+  "repository": "https://github.com/FCisco95/claude-code-mods",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}
