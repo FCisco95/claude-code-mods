@@ -2,7 +2,7 @@ declare module 'claude-code' {
   interface PluginState {
     'chat-handoff': {
       // 'idle' nothing to show, 'working' the prompt is being written, 'ready' it is written, 'failed' it could not be.
-      status: 'idle' | 'working' | 'ready' | 'failed'
+      status: 'idle' | 'offer' | 'working' | 'ready' | 'failed'
       // What fired it: 'tokens', 'cold' or 'command'.
       reason: string
       // The handoff prompt, plain text; '' until one is written.

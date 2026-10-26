@@ -18,7 +18,7 @@ const GREEN = '#16a34a'
 const AMBER = '#ca8a04'
 const RED = '#dc2626'
 
-const status = atom({ plugin: 'chat-handoff', key: 'status' } as const, 'idle' as 'idle' | 'working' | 'ready' | 'failed')
+const status = atom({ plugin: 'chat-handoff', key: 'status' } as const, 'idle' as 'idle' | 'offer' | 'working' | 'ready' | 'failed')
 const reason = atom({ plugin: 'chat-handoff', key: 'reason' } as const, '')
 const draft = atom({ plugin: 'chat-handoff', key: 'draft' } as const, '')
 const savedPath = atom({ plugin: 'chat-handoff', key: 'savedPath' } as const, '')
@@ -307,8 +307,11 @@ const check = async ($: EngineInterface) => {
   const isCold = cache.last > 0 && cache.ttl > 0 && now >= cache.last + cache.ttl
 
   if (isCold && cache.tokens >= MIN_COLD_TOKENS && coldOfferedFor !== cache.last) {
+    // Writing the handoff re-caches the whole chat, so a cold cache only offers it: nothing is spent until the click.
     coldOfferedFor = cache.last
-    await generate($, 'cold')
+    await update($, reason, () => 'cold')
+    await update($, isHidden, () => false)
+    await update($, status, () => 'offer')
   }
 }
 
@@ -381,6 +384,11 @@ export const register: Register = on => {
   on('turn.start', async ($, e, next) => {
     if (e.agentId === undefined) {
       isTurnRunning = true
+
+      // The cache is warm again: the cold offer no longer applies.
+      if ((await read($, status)) === 'offer') {
+        await update($, status, () => 'idle')
+      }
     }
 
     return next(e)
@@ -419,6 +427,17 @@ export const register: Register = on => {
     const { Box, Button, Text } = $.ui.resolve(e)
     const why = WHY[await read($, reason)] ?? ''
     const hide = <Button key="hide" label="×" onPress={() => update($, isHidden, () => true)} />
+
+    if (current === 'offer') {
+      return (
+        <Box paddingX={1} gap={1}>
+          <Text color={AMBER} weight="bold">⇄ Handoff</Text>
+          <Text dimColor>{`${why}: writing a handoff now costs one full re-cache.`}</Text>
+          <Button key="write" label="Write handoff" variant="primary" onPress={() => void generate($, 'cold')} />
+          {hide}
+        </Box>
+      )
+    }
 
     if (current === 'working') {
       return (

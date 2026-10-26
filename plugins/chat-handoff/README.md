@@ -7,7 +7,7 @@ Long chats rot: the fuller the context window, the more details Claude misses. C
 ## Triggers
 
 - **250,000 tokens.** The size is the one Cache Clock already tracks: the prompt tokens the next request re-sends (input + cache read + cache write + output of the last main-thread reply). If Cache Clock has no figure yet, it falls back to the status line's context figure (`$.session.usage()`). It checks every 3 seconds while no turn is running.
-- **Cold cache.** Reads Cache Clock's own state (`lastRequestAt` and `ttlMs`, shared through `$.state`): the cache is cold when the last request is older than the lifetime Cache Clock read from the API. It needs Cache Clock loaded, and only fires above 50,000 tokens, since a cold cache on a small chat costs next to nothing. One cold spell fires once.
+- **Cold cache.** Reads Cache Clock's own state (`lastRequestAt` and `ttlMs`, shared through `$.state`): the cache is cold when the last request is older than the lifetime Cache Clock read from the API. It needs Cache Clock loaded, and only fires above 50,000 tokens, since a cold cache on a small chat costs next to nothing. One cold spell offers once: a `Write handoff` button appears and nothing is spent until you press it, because writing the handoff re-caches the whole chat. Sending a new message dismisses the offer.
 - **`/handover`.** Writes it now. `/handover start`, `/handover copy` and `/handover show` do the rest from the keyboard. The mod also tries to register `/handoff`; if another plugin already owns that name, only `/handover` answers.
 
 ## What it writes
@@ -28,7 +28,7 @@ A band above the prompt shows `Start fresh chat`, `Copy` and `×`. Nothing start
 
 - No mod API opens a new chat directly, so "fresh chat" is `/clear` plus a submitted prompt.
 - The 250k figure is unreachable on a model whose window is smaller than that, because auto-compact comes first.
-- Writing the prompt costs one request over the chat: cheap while the cache is warm, one full re-cache when the trigger was a cold cache.
+- Writing the prompt costs one request over the chat: cheap while the cache is warm, one full re-cache when the cache is cold (which is why a cold cache only offers it).
 - Claude Code only. Depends on the `cache-clock` mod for the cold-cache trigger.
 
 ## Install
