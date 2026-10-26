@@ -1,0 +1,13 @@
+{
+  "name": "replay-theater",
+  "version": "0.1.0",
+  "description": "Type /replay to step through every file edit Claude made in the last turn, one change at a time, with what was removed and what was added.",
+  "author": {
+    "name": "Cisco Vieira",
+    "url": "https://github.com/FCisco95"
+  },
+  "homepage": "https://github.com/FCisco95/claude-code-mods/tree/main/plugins/replay-theater",
+  "repository": "https://github.com/FCisco95/claude-code-mods",
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

@@ -41,6 +41,11 @@
       "name": "screen-share",
       "source": "./plugins/screen-share",
       "description": "Type /screen-share before you record: names, emails, phone numbers and money amounts show as grey bars. Claude still reads the real text."
+    },
+    {
+      "name": "replay-theater",
+      "source": "./plugins/replay-theater",
+      "description": "Type /replay to step through every file edit Claude made in the last turn, one change at a time."
     }
   ]
 }
