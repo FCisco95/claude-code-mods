@@ -92,7 +92,7 @@ test('/mods lists the mods, leaves out plain plugins, and a click switches one',
 
   await ui.press({ key: 'on-cache-clock@skills-dir' })
   expect(ran.some(argv => argv.join(' ') === 'claude plugin disable cache-clock@skills-dir --scope user')).toBe(true)
-  expect((await ui.find({ type: 'Text', text: /is off in every chat/ }))?.text).toBe('Cache Clock is off in every chat.')
+  expect((await ui.find({ type: 'Text', text: /is off in every chat/ }))?.text).toBe('Cache Clock is off in every chat. This chat may keep showing what it already drew until you start a new chat.')
 
   await ui.press({ key: 'on-screen-share@skills-dir' })
   expect(ran.some(argv => argv.join(' ') === 'claude plugin enable screen-share@skills-dir --scope user')).toBe(true)

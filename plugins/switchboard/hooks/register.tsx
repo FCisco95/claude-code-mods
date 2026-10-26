@@ -106,7 +106,9 @@ const toggle = async ($: EngineInterface, mod: Mod) => {
 
     await update($, note, () =>
       run.exitCode === 0
-        ? `${mod.title} is ${mod.isEnabled ? 'off' : 'on'} in every chat.`
+        ? mod.isEnabled
+          ? `${mod.title} is off in every chat. This chat may keep showing what it already drew until you start a new chat.`
+          : `${mod.title} is on in every chat.`
         : `Could not switch ${mod.title} ${mod.isEnabled ? 'off' : 'on'}: ${(run.stderr || run.stdout).trim().split('\n')[0] ?? 'unknown error'}`,
     )
   } catch (e) {
