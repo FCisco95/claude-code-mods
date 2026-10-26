@@ -17,7 +17,7 @@ Five small, free mods for [Claude Code](https://claude.com/claude-code) that mak
 
 ## Install
 
-Requires Claude Code 2.1.275 or later with mods enabled.
+Requires Claude Code 2.1.292 or later with mods enabled. `cache-clock` (and so `chat-handoff`) also needs Node.js on your PATH: it reads the cache lifetime from the session transcript with `node -e`.
 
 **From the marketplace** (one mod at a time):
 
@@ -38,6 +38,18 @@ Pass mod names to install only some: `./install.sh cache-clock chat-handoff`. St
 
 `chat-handoff` reads Cache Clock's state for its cold-cache trigger, so install both.
 
+## On a new computer
+
+Mods are not tied to your subscription. Claude Code's docs describe plugins and mods as installed per machine (`~/.claude/plugins` for marketplace installs, `~/.claude/skills` for folders), and do not describe any sync between machines. So repeat the install on each computer:
+
+1. Install Claude Code 2.1.292 or later and Node.js.
+2. `git clone https://github.com/FCisco95/claude-code-mods && cd claude-code-mods && ./install.sh` (`./install.ps1` on Windows).
+3. Start a new Claude Code session.
+
+Prefer the marketplace? `claude plugin install <mod> --marketplace FCisco95/claude-code-mods` also works, but the mod then shows as `<mod>@claude-code-mods` instead of `<mod>@skills-dir`, so use that name in the opt-out below.
+
+Your own data is not in this repo. `reflect` keeps saved rules in `~/.claude/rules/reflect.md` on each machine; carry that file yourself (a dotfiles manager or a copy).
+
 ## Global by default, off per project
 
 Mods installed this way are user-level: they run in every project with no setup. To turn one off in a single project, put this in that project's `.claude/settings.json` (other projects are untouched):
@@ -45,6 +57,8 @@ Mods installed this way are user-level: they run in every project with no setup.
 ```json
 { "enabledPlugins": { "helper-desk@skills-dir": false } }
 ```
+
+(`@skills-dir` is the name when installed with `install.sh`.)
 
 ## Adding a mod
 
