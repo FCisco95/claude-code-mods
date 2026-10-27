@@ -129,6 +129,9 @@ export const register: Register = on => {
       name: 'helper-desk',
       description: 'Open the subagent panel (live cards, click one to open its session)',
     })
+    // Opens by itself; the person closes it when they like. Unasked, the engine places it only on a wide enough terminal.
+    void $.ui.open({ id: PANE, title: 'Helper Desk' })
+
     // Redraw twice a second while a task or an agent runs, so spinners and clocks move.
     $.clock.every(TICK_MS, () => {
       void (async () => {

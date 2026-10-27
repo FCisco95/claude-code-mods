@@ -23,7 +23,7 @@ The **goal** is the first sentence of the prompt that was current when the to-do
 
 ## Open it
 
-The panel does not open by itself, so it never takes room from your chat. `/inventory` opens it when you want it.
+The panel opens by itself when a session starts. Close it whenever you like; `/inventory` opens it again. On its own it only shows on a wide enough terminal (144 columns, or 110 once you have opened it yourself); `/inventory` opens it at any width.
 
 ## Limits
 

@@ -49,6 +49,9 @@ export const register: Register = on => {
       // an empty panel is better than a failed start
     }
 
+    // Opens by itself; the person closes it when they like. Unasked, the engine places it only on a wide enough terminal.
+    void $.ui.open({ id: PANE, title: 'In this chat' })
+
     return next(e)
   })
 
