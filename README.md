@@ -13,13 +13,13 @@ Nine focused mods for developers who lose track of edits, subagents and context 
 
 **Source snapshot:** nine mods, manifests `0.1.0`, no tags or GitHub releases as of 4 November 2026. Built on the early-access mod API; compatibility across versions and surfaces is not established.
 
-## See the change, one edit at a time
+## Watch three workflows in one loop
 
-**Claude edits → `/replay` → inspect the diff.** Move between edits with `Next` and `Prev`, without asking the model to explain them again.
+**Choose your panels → review an edit → follow task progress.** The loop moves through Switchboard, Replay Theater and Helper Desk, with each command and result labelled.
 
-![Replay Theater steps forward and back through edits to a date helper](assets/replay-theater.gif)
+![Edited montage cycling through Switchboard panel visibility, Replay Theater diffs and Helper Desk task completion](assets/portfolio/showcase.gif)
 
-*Existing demo: an edit to `C:/demo/dates.js`. Replay adds no model calls and covers Edit/Write events after loading. Shell edits are outside its coverage. It is a viewer, not undo.*
+*16.2-second edited montage of three existing demos, not a continuous session or a new recording. It loops automatically; it is not an interactive slider. These UI mods add no model calls, while the work they display uses normal Claude usage. Individual examples are available below.*
 
 ## Choose a mod
 
@@ -55,6 +55,17 @@ Switchboard invokes local plugin commands. Inventory reflects the session events
 ## More ways to see the work
 
 <details>
+<summary><strong>Replay Theater — inspect each edit</strong></summary>
+
+After Claude edits a file, run `/replay`. Use `Next` and `Prev` to compare removed and added lines in the last editing turn.
+
+![Replay Theater steps forward and back through edits to a date helper](assets/replay-theater.gif)
+
+*Existing demo: `C:/demo/dates.js`. Replay adds no model calls and covers Edit/Write events after loading. Shell edits are outside its coverage. It is a viewer, not undo.*
+
+</details>
+
+<details>
 <summary><strong>Switchboard — choose what stays on screen</strong></summary>
 
 Run `/mods` (or `/switchboard`). `Hide panel` removes Cache Clock's band; `Show panel` restores it without disabling the mod.
@@ -77,6 +88,17 @@ Open `/helper-desk` to see agents move from running to finished. This example co
 </details>
 
 <details>
+<summary><strong>Screen-Share — compare visual masking off and on</strong></summary>
+
+This six-second loop turns the existing before/after screenshot into a sequential comparison. All invoice data is invented. It is an edit of two still images, not footage of a command being executed.
+
+![Edited before-and-after stills of a fictional invoice, with Screen-Share masking off and on](assets/portfolio/screen-share-example.gif)
+
+*Display-only pattern masking, not anonymization. The model and stored transcript retain the original text. Some line-item amounts remain visible in this example. See the privacy limits below before recording.*
+
+</details>
+
+<details>
 <summary><strong>Overview — three views side by side</strong></summary>
 
 ![Switchboard's mod list, Replay Theater's file diff and Helper Desk's subagent cards](assets/hero.png)
@@ -85,7 +107,7 @@ Open `/helper-desk` to see agents move from running to finished. This example co
 
 </details>
 
-These are separate existing examples, not a continuous recording of current source. The [media plan](docs/portfolio/media-plan.md) records provenance limits and the planned walkthrough. This gallery uses GitHub's expandable sections, without JavaScript or a custom carousel.
+These are existing examples and clearly labelled edits, not new runtime acceptance of current source. The [media plan](docs/portfolio/media-plan.md) records inputs, crops and rendering steps. The gallery uses GitHub's expandable sections; the main GIF supplies the automatic sequence without JavaScript.
 
 ## Try a mod
 

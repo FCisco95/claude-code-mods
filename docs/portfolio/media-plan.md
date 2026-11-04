@@ -26,6 +26,25 @@ Five new presentation assets live in `assets/portfolio/`: `install.svg`, `explor
 
 The original hero is reused in the overview rather than competing with the primary demonstration. New video/still capture remains pending as described below.
 
+## Animated gallery candidate — after publication
+
+Cisco requested more examples or a cycling gallery after the presentation was published. The follow-up adds two edited GIFs: new media exports from existing captures, not new runtime examples or live acceptance. After reviewing the local candidate, Cisco explicitly authorized commit/push on 4 November 2026. The checks below document the approved media; repository history identifies the resulting publication commit.
+
+| Output | Inputs and edit | Duration / dimensions / size |
+|---|---|---|
+| `assets/portfolio/showcase.gif` | Switchboard → Replay Theater → Helper Desk. Nine source states, title/command labels and explicit montage/usage captions. | 16.2 seconds; 880 × 660; 9 frames; 415,401 bytes. |
+| `assets/portfolio/screen-share-example.gif` | The Off and On halves of `assets/screen-share.png`, shown for three seconds each. Caption identifies edited stills, invented data and display-only masking. | 6 seconds; 600 × 500; 2 frames; 33,396 bytes. |
+
+The README candidate replaces its single Replay lead image with the three-workflow loop. Original Replay, Switchboard and Helper Desk GIFs remain available individually in expandable sections, joined by the Screen-Share comparison. This is automatic GIF playback, not a JavaScript slider; there are no working next/previous controls in the montage.
+
+Switchboard uses two synchronized crops from each original frame: the top of the mod pane (`x=735, y=0, width=357, height=190`) and the cache/status band (`x=0, y=505, width=735, height=45`). This removes unrelated invoice history while preserving the Hide/Show change and its result. Replay and Helper Desk retain their complete original frame content, scaled to fit. Screen-Share uses `550 × 334` crops at `(30,30)` and `(600,30)`; unmasked line-item amounts are deliberately preserved and called out in the README.
+
+Render recipe: [render-gallery.py](render-gallery.py), run with existing Python/Pillow and FFmpeg 8.1.1 on Windows, using the existing Consolas font. Rebuild with `python docs/portfolio/render-gallery.py`; on another machine, pass an existing font via `--font-dir` and `--font-file`. Different fonts/encoder builds can change pixels and byte size. The recipe flattens transparent borders, overlays explanatory text, applies a shared palette and coalesces identical consecutive frames while preserving their holds. Original captures are not overwritten. It performs no mod installation, model call or network request.
+
+The HyperFrames entry skill was consulted. Its CLI was unavailable under `npx --no-install hyperframes usage --json`; usage was unknown. No package was installed or updated. The existing local FFmpeg was used to meet the no-install constraint.
+
+New live recordings of the remaining mods are still pending. The edited Screen-Share comparison does not resolve that mod's compatibility, coverage or live-flow acceptance.
+
 ## Main walkthrough: 30 seconds, pending
 
 Use a disposable project with an empty synthetic history, titled `mods-demo`. No real project, account history, credential, personal folder, prompt or client data should appear. The following storyboard describes a future real capture, not an executed fixture or generated product UI.

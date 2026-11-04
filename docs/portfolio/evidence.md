@@ -76,15 +76,27 @@ The public repository page was opened in Orca's browser without a signed-in acco
 
 GitHub tags and releases APIs both still returned zero. No product code, installer, original capture, account setting or release was changed; no mods were activated and no model inference was executed.
 
+## Animated gallery candidate verification
+
+After the published presentation, Cisco requested more examples or a cycling gallery. The follow-up adds `assets/portfolio/showcase.gif` and `assets/portfolio/screen-share-example.gif`, updates the README/gallery and records the reusable recipe in `docs/portfolio/render-gallery.py`. It does not add new live captures or claim additional runtime acceptance. Cisco reviewed the local result and explicitly authorized commit/push on 4 November 2026. These are pre-publication checks; repository history identifies the resulting commit.
+
+Verification: 59 relative links/images/anchors resolved with exact path casing; local browser rendering loaded 11 images and opened all seven disclosure sections at 1280 px and 375 px, in light and dark, without page-wide overflow. Both new GIFs changed frames during browser playback. All nine montage frames and both Screen-Share comparison frames were visually inspected. Headline/layout screenshots were inspected after image decoding completed. Fine terminal text still benefits from opening the full-size GIF on mobile. Before commit, the links, reviewed GIF hashes, frame counts/durations, size limits and render-recipe syntax were checked again. Live-page read-back follows publication and is not asserted by these pre-publication checks.
+
+`showcase.gif`: 880 × 660, nine frames, 16,200 ms, 415,401 bytes; SHA-256 `2f2ceb01326bae2e16ddb888babff7bb62a61663d44f891df2ad750bc1237242`.
+
+`screen-share-example.gif`: 600 × 500, two frames, 6,000 ms, 33,396 bytes; SHA-256 `a9b6f270cddbe35352e9d5911d35b42eb9a17e48e0163a3c0ece3aa06010d7e7`.
+
+The render used existing FFmpeg 8.1.1 and Pillow 10.4.0, without installing/updating dependencies, mod activation or model inference. The unavailable HyperFrames CLI and fallback are recorded in the media plan. Original captures, installers and product code remain unchanged. Temporary review files were removed after verification.
+
 ## Continuation within presentation scope
 
-Cisco approved the second visual candidate and publication is confirmed above. The presentation is on main; any further edits should begin with a fresh status/diff check. Live compatibility and new recording remain separate future work, not prerequisites invented after this documentation publication.
+Cisco approved the second visual candidate and its publication is confirmed above. The subsequent animated gallery is also approved for publication; see the [media plan](media-plan.md). Check the remote commit and live README after push before reporting it published. Live compatibility and new recording remain separate future work.
 
 The invoice data confirmation is complete. Existing captures are reused unchanged; five static presentation SVGs were added after Cisco approved the visual improvements. New recording remains pending; no new public video link exists. Releases, product code changes and paid execution remain outside the publication approval. Preserve concurrent edits.
 
 Suggested skills: task-observer (respect presentation-only write ownership), the-analyst, verification-before-completion; built-in-browser or agent-browser if doing a permitted rendering review. Use handoff for session closure, keeping notes within the authorized presentation paths unless scope is expanded.
 
-Generated artifacts: `docs/portfolio/installation.md`, `media-plan.md`, this evidence/continuation note, the rewritten root README, and `assets/portfolio/{install,explore,compatibility,license,experimental}.svg`. No credentials, installed tools, deployed resources or external uploads were created.
+Generated artifacts: `docs/portfolio/installation.md`, `media-plan.md`, this evidence/continuation note, the rewritten root README, `assets/portfolio/{install,explore,compatibility,license,experimental}.svg`, `assets/portfolio/{showcase,screen-share-example}.gif`, and `docs/portfolio/render-gallery.py`. No credentials, installed tools or separate deployed resources were created. Public distribution is through the approved repository commits.
 
 Next-session prompt:
 
