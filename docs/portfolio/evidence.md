@@ -66,11 +66,19 @@ Source inspection and read-only host help are complete. Candidate checks perform
 | GitHub Markdown renderer | Before publication, GitHub's Markdown API rendered the approved README in repository context. Nine images, five native disclosure sections and all three navigation destinations survived sanitization; no scripts were present. This confirms GitHub markup handling, separately from live-page visual inspection. |
 | Diff / scope | `git diff --check` passed; root README, three new portfolio documents and five new presentation SVGs only. Original captures, product code and installers unchanged. Temporary local render/inspection files removed. |
 
-Hero and Switchboard text remain small at mobile width; the second visual candidate moves them into expandable sections and leads with the focused Replay example. Buttons wrap onto two rows at 375 px. Cisco has confirmed the visible invoice data is invented. Exact GitHub rendering remains a pre-publication check; original capture environment/version remains unknown. Product tests and live compatibility checks were not run; no installation/update/rollback success is claimed.
+Hero and Switchboard text remain small at mobile width; the second visual candidate moves them into expandable sections and leads with the focused Replay example. Buttons wrap onto two rows in the local 375 px check. Cisco has confirmed the visible invoice data is invented. Original capture environment/version remains unknown. Product tests and live compatibility checks were not run; no installation/update/rollback success is claimed.
+
+## Publication receipt — 4 November 2026
+
+Presentation commit `2e09609c6f17d73a6972abc7eac33d40b4bd71e0` was pushed to `origin/main` after Cisco's approval. GitHub's commits API returned the same SHA, and the published README blob matched the local blob `fe411aab16afaed1499efea20d6c3122f79d5067`. The working tree was clean after the push. This receipt is a subsequent documentation update.
+
+The public repository page was opened in Orca's browser without a signed-in account. A desktop screenshot confirmed the new heading, three button images and MIT/Experimental indicators in GitHub's renderer. All README image elements reported loaded, including GitHub-generated duplicate GIF elements; five native disclosure sections were present. Clicking Explore mods reached `#choose-a-mod`. Opening the Switchboard summary returned `open: true` with its images loaded. Its scrolled screenshot was blank, so that screenshot is not treated as visual acceptance of the expanded gallery. The complete desktop layout, mobile widths and both themes were inspected in the local approximation; the live GitHub mobile/theme combinations were not separately exercised.
+
+GitHub tags and releases APIs both still returned zero. No product code, installer, original capture, account setting or release was changed; no mods were activated and no model inference was executed.
 
 ## Continuation within presentation scope
 
-Cisco approved the second visual candidate and authorized advancing to publication on 4 November 2026. Pre-publication checks are recorded above. Publish only the nine approved presentation files, then confirm the remote commit and live README. Consult repository history for the resulting publication commit; this note records the approval and pre-publication evidence rather than asserting a future push succeeded.
+Cisco approved the second visual candidate and publication is confirmed above. The presentation is on main; any further edits should begin with a fresh status/diff check. Live compatibility and new recording remain separate future work, not prerequisites invented after this documentation publication.
 
 The invoice data confirmation is complete. Existing captures are reused unchanged; five static presentation SVGs were added after Cisco approved the visual improvements. New recording remains pending; no new public video link exists. Releases, product code changes and paid execution remain outside the publication approval. Preserve concurrent edits.
 
