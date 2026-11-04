@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="136" height="38" viewBox="0 0 136 38" role="img" aria-labelledby="title">
+  <title id="title">Explore mods</title>
+  <rect x="0.5" y="0.5" width="135" height="37" rx="7" fill="#25232b" stroke="#77717f"/>
+  <path d="m13 14 5 5-5 5m9 0h6" fill="none" stroke="#bcb2ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="37" y="24" fill="#f3eff8" font-family="Arial,Helvetica,sans-serif" font-size="13" font-weight="700">Explore mods</text>
+</svg>
